@@ -45,5 +45,4 @@ function playerMove(rock,paper,scissor){
 	compMove=rollComp();
 	[rockComp,paperComp,scissorComp]=compMove;
 	judgePrint(rock,paper,scissor,rockComp,paperComp,scissorComp);
-	
 }
