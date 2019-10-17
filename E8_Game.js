@@ -8,26 +8,36 @@ button_Scissor.addEventListener('click', function() {
 	playerMove(0,0,1);
 });
 
-function playerMove(rock,paper,scissor){
-	var compMove,rockComp,paperComp,scissorComp;
-	compMove = Math.floor(Math.random() * 3) + 1;
-	if(compMove==1)rockComp=1;
+function rollComp(){
+	var	roll = Math.floor(Math.random() * 3) + 1;
+	if(roll==1)return [1,0,0];//rock
 	else{
-		if (compMove==2) paperComp=1;
+		if (roll==2) return [0,1,0];//paper
 		else{
-			scissorComp=1;
+			return [0,0,1];//scissor
 		}
 	}
-	//win conditions
+}
+
+function judgePrint(rock,paper,scissor,rockComp,paperComp,scissorComp){
+	var output = document.getElementById('output');
 	if((rock==1&&scissorComp==1)||(paper==1&&rockComp==1)||(scissor==1&&paperComp==1)){
-		output.innerHTML += 'You have won.<br>';
+		output.insertAdjacentHTML('afterbegin', 'You have won.<br>');//win conditions
 	}
 	else{
-		//lose conditions
 		if((rock==1&&paperComp==1)||(paper==1&&scissorComp==1)||(scissor==1&&rockComp==1)){
-			output.innerHTML += 'You have lost.<br>';
+		output.insertAdjacentHTML('afterbegin', 'You have lost.<br>');//lose conditions
 		}else{
-			output.innerHTML += 'There is a draw.<br>';
+			output.insertAdjacentHTML('afterbegin', 'There is a draw.<br>');//draw conditions
+
 			}
 	}
+}
+
+function playerMove(rock,paper,scissor){
+	var compMove,rockComp,paperComp,scissorComp;
+	compMove=rollComp();
+	[rockComp,paperComp,scissorComp]=compMove;
+	judgePrint(rock,paper,scissor,rockComp,paperComp,scissorComp);
+	
 }
