@@ -31,4 +31,13 @@ button {
 		color: #02ac46;
 		background-color: #fff;
 	}
+	
+  	&#button_new_game {
+		background-color: red;
+    border: 2px solid red;
+	    &:hover, &:active {
+			color: red;
+			background-color: #fff;
+		}
+  	}
 }

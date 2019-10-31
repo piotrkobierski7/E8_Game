@@ -1,48 +1,72 @@
-var resultPlayer=0;
-var resultComp=0;
+'use strict';
+var resultPlayer = 0;
+var resultComp = 0;
+var startGame = true;
+var endGame = 0;
+button_new_game.addEventListener('click', function() {
+	startGame = true;
+	endGame = window.prompt('How many rounds in order to win?');
+}
 button_Rock.addEventListener('click', function() {
-	playerMove(1,0,0);
+	if (!startGame ) output.insertAdjacentHTML('afterbegin', ' Please click the new game button in order to play new game <br><br>') ;
+	else {
+			if (resultPlayer < endGame || resultComp < endGame) {
+				if (startGame) playerMove(1);
+		} else checkResult();
+	}
 });
 button_Paper.addEventListener('click', function() {
-	playerMove(0,0,1);
+	if (!startGame ) output.insertAdjacentHTML('afterbegin', ' Please click the new game button in order to play new game <br><br>') ;
+	else {
+		if (resultPlayer < endGame || resultComp < endGame) {
+				if (startGame) playerMove(2);
+		} else checkResult();
+	}
 });
 button_Scissor.addEventListener('click', function() {
-	playerMove(0,0,1);
+	if (!startGame ) output.insertAdjacentHTML('afterbegin', ' Please click the new game button in order to play new game <br><br>') ;
+	else {
+			if (resultPlayer < endGame || resultComp < endGame) {
+				if (startGame) playerMove(3);
+		} else checkResult();
+	}
 });
-
-function rollComp(){
+function rollComp() {
 	var	roll = Math.floor(Math.random() * 3) + 1;
-	if(roll==1)return [1,0,0];//rock
-	else{
-		if (roll==2) return [0,1,0];//paper
-		else{
-			return [0,0,1];//scissor
-		}
-	}
+	return roll;
 }
-
-function judgePrint(rock,paper,scissor,rockComp,paperComp,scissorComp){
+function judgePrint (player, compMove) {
 	var output = document.getElementById('output');
-	if((rock==1&&scissorComp==1)||(paper==1&&rockComp==1)||(scissor==1&&paperComp==1)){
-		output.insertAdjacentHTML('afterbegin', 'You have won.<br>');//win conditions
+	var playerString, compString;
+	if (player == 1) playerString='ROCK';
+	else player == 2 ? playerString='PAPER' : playerString='SCISSOR';
+	if (compMove == 1) compString='ROCK';
+	else compMove == 2 ? compString='PAPER' : compString='SCISSOR';
+	if ((player==1 && compMove==3)||(player==2 && compMove==1)||(player==3 && compMove==2)) {//win conditions
+		output.insertAdjacentHTML('afterbegin', 'You won: You played '+ playerString  +', computer played '+ compString + '<br>');
 		resultPlayer++;
-		document.getElementById('result').innerHTML='Player`s result '+resultPlayer+' | Computer`s result'+resultComp+'<br><br>' ;
+		document.getElementById('result').innerHTML='Player`s result '+resultPlayer+' | Computer`s result '+resultComp+'<br><br>' ;
 	}
-	else{
-		if((rock==1&&paperComp==1)||(paper==1&&scissorComp==1)||(scissor==1&&rockComp==1)){
-		output.insertAdjacentHTML('afterbegin', 'You have lost.<br>');//lose conditions
+	else {
+		if ((player==1 && compMove == 2)||(player == 2 && compMove == 3)||(player == 3 && compMove == 1)) {//lose conditions
+		output.insertAdjacentHTML('afterbegin', 'You lost: You played '+ playerString  +', computer played '+ compString + '<br>');
 		resultComp++;
 		document.getElementById('result').innerHTML='Player`s result '+resultPlayer+' | Computer`s result'+resultComp+'<br><br>' ;
-		}else{
-			output.insertAdjacentHTML('afterbegin', 'There is a draw.<br>');//draw conditions
+		} else {//draw conditions
+			output.insertAdjacentHTML('afterbegin', 'There is a draw: You played '+ playerString  +', computer played '+ compString + '<br>');
 			document.getElementById('result').innerHTML='Player`s result '+resultPlayer+' | Computer`s result'+resultComp+'<br><br>' ;
 			}
 	}
 }
-
-function playerMove(rock,paper,scissor){
-	var compMove,rockComp,paperComp,scissorComp;
+function playerMove(player){
+	var compMove;
 	compMove=rollComp();
-	[rockComp,paperComp,scissorComp]=compMove;
-	judgePrint(rock,paper,scissor,rockComp,paperComp,scissorComp);
+	judgePrint(player, compMove);
+}
+
+function checkResult()
+{
+	if (resultPlayer==resultComp) output.insertAdjacentHTML('afterbegin', 'THERE WAS A DRAW!!!  Please click the new game button in order to play new game <br><br>') ;
+	resultPlayer > resultComp ? output.insertAdjacentHTML('afterbegin', 'YOU WON THE ENTIRE GAME!!!  Please click the new game button in order to play new game <br><br>') :
+	output.insertAdjacentHTML('afterbegin', 'YOU LOST THE ENTIRE GAME!!!  Please click the new game button in order to play new game <br><br>') ;
 }
